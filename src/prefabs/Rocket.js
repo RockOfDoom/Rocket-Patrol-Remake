@@ -2,6 +2,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);
+        this.sfxRocket = scene.sound.add('sfx_rocket');
         this.movementSpeed = 2;
         // this.launchSpeed = this.movementSpeed;
         // this.launchAccel = 1.035;
@@ -26,6 +27,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
 
             if(Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.firing = true;
+                this.sfxRocket.play();
             }
 
             this.x = Phaser.Math.Clamp(this.x, 
