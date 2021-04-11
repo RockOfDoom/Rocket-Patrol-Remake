@@ -129,7 +129,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        if(this.gameover && Phaser.Input.Keyboard.JustDown(keyF)) {
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
             this.scene.restart();
         }
 
