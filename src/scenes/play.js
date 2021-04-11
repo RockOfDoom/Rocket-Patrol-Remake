@@ -23,22 +23,28 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, 
             game.config.width / 2, 
             game.config.height - borderUISize - borderPadding, 
-            "rocket");
+            "rocket").setOrigin(0.5, 0);
         
         //display ships
         this.ship1 = new Ship(this, 
-            100, 
-            200, 
-            "spaceship");
+            game.config.width + borderUISize * 6, 
+            borderUISize * 4, 
+            "spaceship", 
+            0, 
+            30).setOrigin(0, 0);
         
         this.ship2 = new Ship(this, 
-            300, 
-            240, 
-            "spaceship");
+            game.config.width + borderUISize * 3, 
+            borderUISize * 5 + borderPadding * 2, 
+            "spaceship", 
+            0, 
+            20).setOrigin(0, 0);
         this.ship3 = new Ship(this, 
-            380, 
-            300, 
-            "spaceship");
+            game.config.width, 
+            borderUISize * 6 + borderPadding * 4, 
+            "spaceship", 
+            0, 
+            10).setOrigin(0, 0);
 
         //green UI background
         this.add.rectangle(0, 
@@ -89,10 +95,10 @@ class Play extends Phaser.Scene {
     }
 
     checkCollision(rocket, ship) {
-        if( rocket.x > ship.x && 
-            rocket.x < ship.x + ship.width &&
-            rocket.y > ship.y &&
-            rocket.y < ship.y + ship.height) {
+        if( rocket.x < ship.x + ship.width && 
+            rocket.x + rocket.width > ship.x && 
+            rocket.y < ship.y + ship.height &&
+            rocket.height + rocket.y > ship. y) {
                 ship.alpha = 0;
                 rocket.reset();
                 ship.reset();
