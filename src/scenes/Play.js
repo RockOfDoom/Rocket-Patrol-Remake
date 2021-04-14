@@ -4,8 +4,9 @@ class Play extends Phaser.Scene {
     }
 
     init() {
-        //prepare timer for locking update() to 60ups
-        this.timer = 0.0;
+        this.timer = 0.0; //timer for locking update() to 60ups
+        this.p1ScoreBuffer = 0; //used to have score update incrementially
+        this.frame = 1; //ticks every "frame", resets at 60 / every second
     }
 
     preload() {
@@ -145,8 +146,14 @@ class Play extends Phaser.Scene {
         //only act if enough time has passed since last update()
         //act multiple times if too much time has passed
         while(this.timer >= 16.66666) {
+            if(this.frame > 60) {
+                this.frame = 1; //reset frame every second
+            }
+
             //end the game if time has run out
             if(this.gameOver) {
+                this.p1Score += this.p1ScoreBuffer;
+                this.scoreLeft.text = this.p1Score;
                 if(Phaser.Input.Keyboard.JustDown(keyR)) {
                     this.scene.restart();
                 }
@@ -159,6 +166,13 @@ class Play extends Phaser.Scene {
                 this.ship1.update();
                 this.ship2.update();
                 this.ship3.update();
+
+                //tick score up if any points are in the buffer
+                if(this.p1ScoreBuffer > 0) {
+                    this.p1Score++;
+                    this.p1ScoreBuffer--;
+                    this.scoreLeft.text = this.p1Score;
+                }
             }
 
             //see if the rocket has hit any of the ships
@@ -166,8 +180,9 @@ class Play extends Phaser.Scene {
             this.checkCollision(this.p1Rocket, this.ship2);
             this.checkCollision(this.p1Rocket, this.ship3);
 
-            //tick timer back down once
+            //tick timer back down once and frame up once
             this.timer -= 16.66666;
+            this.frame++;
         }
     }
 
@@ -196,8 +211,7 @@ class Play extends Phaser.Scene {
             boom.destroy();
         });
 
-        this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score;
+        this.p1ScoreBuffer += ship.points;
     }
 }
 
