@@ -1,8 +1,8 @@
 //list of mods:
-//  Rocket accelerates exponentially after being fired for juice reasons (in Rocket.js)
-//  Game updates 60 times per second regardless of FPS (in Play.js)
-//  Score display updates incrementally (1pt per frame) rather than all at once for juice
-// 
+//X pts  - Rocket accelerates exponentially after being fired for juice reasons (in Rocket.js)
+//X pts  - Game updates 60 times per second regardless of FPS (in Play.js)
+//X pts  - Score display updates incrementally (1pt per frame) rather than all at once for juice (in Play.js)
+//10 pts - Play timer is visible to player (in Play.js)
 
 let config = {
     type: Phaser.AUTO,
