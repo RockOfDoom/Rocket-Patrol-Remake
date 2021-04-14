@@ -1,3 +1,8 @@
+//list of mods:
+//  Rocket accelerates exponentially after being fired for juice reasons (in Rocket.js)
+//  Game updates 60 times per second regardless of FPS (in Play.js)
+//  
+
 let config = {
     type: Phaser.AUTO,
     width: 640,

@@ -4,11 +4,12 @@ class Play extends Phaser.Scene {
     }
 
     init() {
-        //prepare timer for update
+        //prepare timer for locking update() to 60ups
         this.timer = 0.0;
     }
 
     preload() {
+        //load all art assets needed for scene
         this.load.image("starfield", './assets/starfield.png');
         this.load.image("rocket", './assets/rocket.png');
         this.load.image("spaceship", './assets/spaceship.png');
@@ -88,6 +89,7 @@ class Play extends Phaser.Scene {
             game.config.height, 
             0xFFFFFF).setOrigin(0 ,0);
         
+        //configure user input
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -117,8 +119,6 @@ class Play extends Phaser.Scene {
         //initialize clock
         this.clock = game.settings.gameTimer / 1000;
 
-
-
         //GAME OVER flag
         this.gameOver = false;
         
@@ -139,9 +139,13 @@ class Play extends Phaser.Scene {
     }
 
     update(time, delta) {
+        //tick timer with how long it has been since last update() in milliseconds
         this.timer += delta;
 
+        //only act if enough time has passed since last update()
+        //act multiple times if too much time has passed
         while(this.timer >= 16.66666) {
+            //end the game if time has run out
             if(this.gameOver) {
                 if(Phaser.Input.Keyboard.JustDown(keyR)) {
                     this.scene.restart();
@@ -149,7 +153,7 @@ class Play extends Phaser.Scene {
                 if(Phaser.Input.Keyboard.JustDown(keyLEFT)) {
                     this.scene.start("menuScene");
                 }
-            } else {
+            } else { //if game is not over, update all game pieces
                 this.starfield.tilePositionX -= 4;
                 this.p1Rocket.update();
                 this.ship1.update();
@@ -157,14 +161,18 @@ class Play extends Phaser.Scene {
                 this.ship3.update();
             }
 
+            //see if the rocket has hit any of the ships
             this.checkCollision(this.p1Rocket, this.ship1);
             this.checkCollision(this.p1Rocket, this.ship2);
             this.checkCollision(this.p1Rocket, this.ship3);
 
+            //tick timer back down once
             this.timer -= 16.66666;
         }
     }
 
+    //function for checking to see if rocket and ship are currently colliding,
+    //and then destroy both of them if they are
     checkCollision(rocket, ship) {
         if( rocket.x < ship.x + ship.width && 
             rocket.x + rocket.width > ship.x && 
@@ -175,6 +183,7 @@ class Play extends Phaser.Scene {
             }
     }
 
+    //destroy ships by resetting them and playing destroy animation
     shipExplode(ship) {
         ship.alpha = 0;
 
