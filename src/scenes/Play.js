@@ -129,7 +129,7 @@ class Play extends Phaser.Scene {
         //GAME OVER flag
         this.gameOver = false;
         
-        //play clock
+        //end game once time is over
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width / 2, 
@@ -216,7 +216,7 @@ class Play extends Phaser.Scene {
 
         let boom = this.add.sprite(ship.x, ship.y, "explosion").setOrigin(0, 0);
         boom.anims.play('explode');
-        this.sound.play('sfx_explosion');
+        this.sound.play('sfx_explosion', {volume: 0.5});
         boom.on('animationcomplete', () => {
             ship.reset();
             ship.alpha = 1;

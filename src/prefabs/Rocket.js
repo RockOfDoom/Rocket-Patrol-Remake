@@ -2,7 +2,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         scene.add.existing(this); //add to current scene
-        this.sfxRocket = scene.sound.add('sfx_rocket'); //load launch sound effect
+        this.sfxRocket = scene.sound.add('sfx_rocket', {volume: 0.5}); //load launch sound effect
         this.movementSpeed = 2; //set aiming movement speed
         this.launchSpeed = 2.5 * this.movementSpeed; //set initial firing movement speed
         this.launchAccel = 1.045; //set acceleration of rocket once it has been fired
