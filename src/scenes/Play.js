@@ -118,13 +118,7 @@ class Play extends Phaser.Scene {
             scoreConfig);
         
         //initialize clock
-        this.clockDisplay = game.settings.gameTimer / 1000 - 1;
-
-        //display clock
-        this.clockRight = this.add.text(game.config.width - borderUISize - borderPadding - 100, 
-            borderUISize + borderPadding * 2, 
-            this.clockDisplay + "s", 
-            scoreConfig);
+        this.clock = game.settings.gameTimer / 1000;
 
         //GAME OVER flag
         this.gameOver = false;
@@ -179,12 +173,6 @@ class Play extends Phaser.Scene {
                     this.p1ScoreBuffer--;
                     this.scoreLeft.text = this.p1Score;
                 }
-
-                //tick clock
-                if(this.frame == 60) {
-                    this.clockDisplay--;
-                    this.clockRight.text = this.clockDisplay + "s";
-                }
             }
 
             //see if the rocket has hit any of the ships
@@ -192,7 +180,7 @@ class Play extends Phaser.Scene {
             this.checkCollision(this.p1Rocket, this.ship2);
             this.checkCollision(this.p1Rocket, this.ship3);
 
-            //tick timer down once and frame up once
+            //tick timer back down once and frame up once
             this.timer -= 16.66666;
             this.frame++;
         }
