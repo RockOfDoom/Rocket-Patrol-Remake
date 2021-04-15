@@ -3,11 +3,6 @@ class Play extends Phaser.Scene {
         super("playScene");
     }
 
-    init() {
-        //prepare timer for update
-        this.timer = 0.0;
-    }
-
     preload() {
         this.load.image("starfield", './assets/starfield.png');
         this.load.image("rocket", './assets/rocket.png');
@@ -114,15 +109,10 @@ class Play extends Phaser.Scene {
             this.p1Score, 
             scoreConfig);
         
-        //initialize clock
-        this.clock = game.settings.gameTimer / 1000;
-
-
-
         //GAME OVER flag
         this.gameOver = false;
         
-        //play clock
+        //60s play clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width / 2, 
@@ -133,36 +123,30 @@ class Play extends Phaser.Scene {
                 game.config.height / 2 + 64,
                 "Press (R) to Restart or ← for Menu", scoreConfig).setOrigin(0.5);
             this.gameOver = true;
-
-        
         }, null, this);
     }
 
-    update(time, delta) {
-        this.timer += delta;
-
-        while(this.timer >= 16.66666) {
-            if(this.gameOver) {
-                if(Phaser.Input.Keyboard.JustDown(keyR)) {
-                    this.scene.restart();
-                }
-                if(Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-                    this.scene.start("menuScene");
-                }
-            } else {
-                this.starfield.tilePositionX -= 4;
-                this.p1Rocket.update();
-                this.ship1.update();
-                this.ship2.update();
-                this.ship3.update();
+    update() {
+        if(this.gameOver) {
+            if(Phaser.Input.Keyboard.JustDown(keyR)) {
+                this.scene.restart();
             }
+            if(Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+                this.scene.start("menuScene");
+            }
+        } 
 
-            this.checkCollision(this.p1Rocket, this.ship1);
-            this.checkCollision(this.p1Rocket, this.ship2);
-            this.checkCollision(this.p1Rocket, this.ship3);
-
-            this.timer -= 16.66666;
+        if(!this.gameOver) {
+            this.starfield.tilePositionX -= 4;
+            this.p1Rocket.update();
+            this.ship1.update();
+            this.ship2.update();
+            this.ship3.update();
         }
+
+        this.checkCollision(this.p1Rocket, this.ship1);
+        this.checkCollision(this.p1Rocket, this.ship2);
+        this.checkCollision(this.p1Rocket, this.ship3);
     }
 
     checkCollision(rocket, ship) {
